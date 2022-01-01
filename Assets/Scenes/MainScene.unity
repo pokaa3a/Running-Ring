@@ -166,6 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5742911815f06426892211f56fff3800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelElements: {fileID: 11400000, guid: 8e4d2d52fbc4b43eab527ee55018da16, type: 2}
   modules:
   - {fileID: 11400000, guid: adfb25d26d6894ae1a3470001e591016, type: 2}
   movingRingObject: {fileID: 983555701}

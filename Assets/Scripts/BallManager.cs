@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class BallManager : MonoBehaviour
 {
@@ -45,38 +46,42 @@ public class BallManager : MonoBehaviour
         currentNumBalls = 1;
     }
 
-    public void AddOneBall(int id)
+    public void AddBalls(int idx, int numBallsToAdd)
     {
-        if (currentNumBalls == maxNumBalls) return;
+        int added = 0;
+        int curIdx = idx;
 
-        int cur;
-        if (Config.clockwise)
+        // DEBUG
+        int count = 0;
+
+        while (added < numBallsToAdd && currentNumBalls < maxNumBalls)
         {
-            cur = id - 1;
-            cur = cur < 0 ? maxNumBalls - 1 : cur;
-
-            while (cur != id && balls[cur].triggered == true)
+            if (Config.clockwise)
             {
-                cur--;
-                cur = cur < 0 ? maxNumBalls - 1 : cur;
+                curIdx = curIdx - 1 < 0 ? maxNumBalls - 1 : curIdx - 1;
+            }
+            else    // ccw
+            {
+                curIdx = curIdx + 1 >= maxNumBalls ? 0 : curIdx + 1;
+            }
+
+            if (!balls[curIdx].triggered)
+            {
+                // find available ball to enable
+                balls[curIdx].triggered = true;
+                currentNumBalls++;
+                added++;
+            }
+
+            count++;
+            if (count > maxNumBalls)
+            {
+                Assert.IsTrue(false, "stuck in while loop!");
             }
         }
-        else
-        {
-            cur = id + 1;
-            cur = cur >= maxNumBalls ? 0 : cur;
-
-            while (cur != id && balls[cur].triggered == true)
-            {
-                cur++;
-                cur = cur >= maxNumBalls ? maxNumBalls - 1 : cur;
-            }
-        }
-        balls[cur].triggered = true;
-        currentNumBalls++;
     }
 
-    public void BallCollideObstacle(Ball ball)
+    public void BallCollides(Ball ball)
     {
         ball.BallExplode();
         currentNumBalls--;

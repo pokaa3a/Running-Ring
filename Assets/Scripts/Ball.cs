@@ -61,11 +61,18 @@ public class Ball : MonoBehaviour
     {
         if (collision.gameObject.tag == "Obstacle")
         {
-            ballManager.BallCollideObstacle(this);
+            ballManager.BallCollides(this);
+        }
+        else if (collision.gameObject.tag == "Breakable")
+        {
+            ballManager.BallCollides(this);
+            Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "Food")
         {
-            ballManager.AddOneBall(id);
+            Food food = collision.gameObject.GetComponent<Food>();
+
+            ballManager.AddBalls(id, food.number);
             Destroy(collision.gameObject);
         }
     }

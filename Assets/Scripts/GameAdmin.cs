@@ -78,6 +78,7 @@ public class GameAdmin : MonoBehaviour
         gameCompletePage.SetActive(false);
         gameOverPage.SetActive(false);
 
+        levelManager.DestroyLevel();
         levelManager.MakeLevel();
         movingRing.Reset();
     }
