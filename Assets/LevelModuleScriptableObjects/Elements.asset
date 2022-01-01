@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38e50ec4a8b3442c4b7869b6368f1665, type: 3}
   m_Name: Elements
   m_EditorClassIdentifier: 
-  obstacle: {fileID: 0}
-  breakable: {fileID: 0}
+  obstacle: {fileID: 6086384416797755592, guid: baa0d4d172aa347c3b7084d4045ce1ac, type: 3}
+  breakable: {fileID: 4214461508139965113, guid: ee121bee273dc42ffa91bbc5479f72da, type: 3}
   food: {fileID: 7704851401150142866, guid: 2fbd7f9aa69154488894c49f82fe165a, type: 3}

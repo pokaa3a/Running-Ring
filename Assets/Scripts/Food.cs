@@ -4,5 +4,17 @@ using UnityEngine;
 
 public class Food : MonoBehaviour
 {
-    public int number = 1;
+    [SerializeField]
+    private TextMesh textMesh;
+
+    public int _number = 1;
+    public int number
+    {
+        get => _number;
+        set
+        {
+            _number = value;
+            textMesh.text = $"{_number}";
+        }
+    }
 }

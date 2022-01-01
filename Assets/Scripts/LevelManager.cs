@@ -76,16 +76,21 @@ public class LevelManager : MonoBehaviour
             if (elementObj.name == "obstacle")
             {
                 elementPrefab = levelElements.obstacle;
+                elementObject = (GameObject)Instantiate(elementPrefab);
             }
             else if (elementObj.name == "food")
             {
                 elementPrefab = levelElements.food;
+                elementObject = (GameObject)Instantiate(elementPrefab);
+
+                Food food = elementObject.GetComponent<Food>();
+                food.number = Random.Range(1, 10);
             }
             else if (elementObj.name == "breakable")
             {
                 elementPrefab = levelElements.breakable;
+                elementObject = (GameObject)Instantiate(elementPrefab);
             }
-            elementObject = (GameObject)Instantiate(elementPrefab);
             elementObject.transform.SetParent(module.transform);
             elementObject.transform.localPosition = elementObj.position;
             elementObject.transform.localRotation = elementObj.rotation;
