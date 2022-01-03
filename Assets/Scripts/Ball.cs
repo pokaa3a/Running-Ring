@@ -28,8 +28,8 @@ public class Ball : MonoBehaviour
     public void Initialize(BallManager manager, int id, float degree)
     {
         gameObject.transform.localPosition = new Vector2(
-            Ring.Config.cx + Mathf.Sin(degree * Mathf.Deg2Rad) * Ring.Config.radius,
-            Ring.Config.cy + Mathf.Cos(degree * Mathf.Deg2Rad) * Ring.Config.radius
+            Mathf.Sin(degree * Mathf.Deg2Rad) * Ring.Config.radius,
+            Ring.Config.originY + Mathf.Cos(degree * Mathf.Deg2Rad) * Ring.Config.radius
         );
         triggered = false;
         this.id = id;
@@ -40,20 +40,20 @@ public class Ball : MonoBehaviour
     {
         // Circular moving
         Vector2 vec = gameObject.transform.localPosition -
-            new Vector3(Ring.Config.cx, Ring.Config.cy);
+            new Vector3(0, Ring.Config.originY);
 
         float radian = Vector2.Angle(Vector2.up, vec) * Mathf.Deg2Rad;
-        if (gameObject.transform.localPosition.x < Ring.Config.cx)
+        if (gameObject.transform.localPosition.x < 0)
             radian = 2f * Mathf.PI - radian;
 
         if (BallManager.Config.clockwise)
-            radian += BallManager.Config.angularSpeed * Time.deltaTime;
+            radian += BallManager.Config.angularSpeed * Time.fixedDeltaTime;
         else
-            radian -= BallManager.Config.angularSpeed * Time.deltaTime;
+            radian -= BallManager.Config.angularSpeed * Time.fixedDeltaTime;
 
         gameObject.transform.localPosition = new Vector2(
-            Ring.Config.cx + Mathf.Sin(radian) * Ring.Config.radius,
-            Ring.Config.cy + Mathf.Cos(radian) * Ring.Config.radius
+            Mathf.Sin(radian) * Ring.Config.radius,
+            Ring.Config.originY + Mathf.Cos(radian) * Ring.Config.radius
         );
     }
 

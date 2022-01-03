@@ -6,11 +6,10 @@ public class Ring : MonoBehaviour
 {
     public class Config
     {
-        public static float radius = 4.0f;
         public const float lineWidthMultiplier = 0.02f;
         public const int numPositions = 100;
-        public const float cx = 0;
-        public const float cy = -2.5f;
+        public static float radius = 4.0f;
+        public static float originY = -2.5f;
     }
 
     LineRenderer lineRenderer;
@@ -18,7 +17,9 @@ public class Ring : MonoBehaviour
     void Awake()
     {
         lineRenderer = gameObject.GetComponent<LineRenderer>();
-        Config.radius *= ScreenSizeUtils.HorizontalScale();
+
+        Config.radius *= ScreenSizeUtils.ScaleBasedOnWidth();
+        Config.originY = -(Camera.main.orthographicSize - Config.radius) * 0.9f;
     }
 
     void Start()
@@ -34,8 +35,8 @@ public class Ring : MonoBehaviour
         {
             float radian = Mathf.Deg2Rad * (i * 360f / Config.numPositions);
             Vector3 pos = new Vector3(
-                Config.cx + Mathf.Sin(radian) * Config.radius,
-                Config.cy + Mathf.Cos(radian) * Config.radius,
+                Mathf.Sin(radian) * Config.radius,
+                Config.originY + Mathf.Cos(radian) * Config.radius,
                 0);
             positions[i] = pos;
         }

@@ -28,7 +28,7 @@ public class MovingRing : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (gameObject.transform.position.y >= finishHeight)
+        if (gameObject.transform.position.y >= finishHeight - Ring.Config.originY)
         {
             GameAdmin.Instance.GameComplete();
             return;
@@ -37,7 +37,7 @@ public class MovingRing : MonoBehaviour
         if (GameAdmin.Instance.ringIsMoving)
         {
             gameObject.transform.position +=
-                Vector3.up * Config.raisingSpeed * Time.deltaTime;
+                Vector3.up * Config.raisingSpeed * Time.fixedDeltaTime;
         }
     }
 }

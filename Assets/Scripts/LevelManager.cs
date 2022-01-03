@@ -8,9 +8,42 @@ public class LevelManager : MonoBehaviour
 {
     public class Config
     {
-        public const float goalHeight = 10f;
+        /*
+            ---- Ring finish line ----   ┐
+                                         │
+                                 {afterGoalHeight}
+                                         │
+            ======== Goal line =======   ┘   ┐
+                                             │
+                                {lastModuleToGoalHeight}
+                                             │
+                ┌──────────────┐             ┘   ┐
+                │   Module j   │                 │
+                └──────────────┘     ┐           │
+                                     │           │
+                                {moduleGap}      │
+                                     │     {modulesHeight}
+                ┌──────────────┐     ┘           │
+                │   Module i   │                 │
+                └──────────────┘       ┐         ┘
+                                       │
+                             {levelStartHeight}
+                                       │
+            --------- y == 0 --------- ┘
+
+            └─────────────────────────┘
+        {ScreenSizeUtils.horizontalSize == 9}
+        */
+        public static float modulesHeight = 90f;
+        public static float moduleGap = Mathf.Ceil(ScreenSizeUtils.horizontalSize / 2f);
+
+        public static float levelStartHeight = Camera.main.orthographicSize + 1f;
+        public static float lastModuleToGoalHeight =
+            Mathf.Ceil(ScreenSizeUtils.horizontalSize / 2f);
+        public static float afterGoalHeight = 0f;
+
         public static string jsonDir = Application.dataPath + "/LevelModuleJsons/";
-        public const float levelStartY = 6f;
+        // public const float levelStartY = 6f;
     }
 
     public class ModuleDimension
@@ -31,8 +64,6 @@ public class LevelManager : MonoBehaviour
     private List<string> moduleJsons = new List<string>();
     private GameObject levelObject = null;
 
-    private float moduleScale = 1f;
-
     void Awake()
     {
         movingRing = movingRingObject.GetComponent<MovingRing>();
@@ -46,7 +77,10 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        moduleScale = ScreenSizeUtils.HorizontalScale();
+        Config.modulesHeight *= ScreenSizeUtils.ScaleBasedOnWidth();
+        Config.moduleGap *= ScreenSizeUtils.ScaleBasedOnWidth();
+        Config.lastModuleToGoalHeight *= ScreenSizeUtils.ScaleBasedOnWidth();
+        Config.afterGoalHeight *= ScreenSizeUtils.ScaleBasedOnWidth();
     }
 
     void DrawFinishLine(float height, GameObject parent)
@@ -109,29 +143,30 @@ public class LevelManager : MonoBehaviour
     {
         levelObject = new GameObject("Level");
         levelObject.transform.SetParent(gameObject.transform);
-        levelObject.transform.localPosition = new Vector2(0, Config.levelStartY);
+        levelObject.transform.localPosition = new Vector2(0, Config.levelStartHeight);
 
-        float newModuleY = 0f;
-        float gapBtwModules = 2f;
-
-        int[] levelIdx = { 5, 5, 0, 0, 0 };
-        int k = 0;
-        while (newModuleY < Config.goalHeight)
+        float newModuleY = 0;
+        while (newModuleY < Config.modulesHeight)
         {
-            // int idx = Random.Range(0, moduleJsons.Count);
-            int idx = levelIdx[k++];
+            int idx = Random.Range(0, moduleJsons.Count);
             ModuleDimension dimension = new ModuleDimension();
             GameObject newModule = InstantiateModuleFromFile(moduleJsons[idx], dimension);
             newModule.transform.SetParent(levelObject.transform);
-            newModule.transform.localScale = new Vector3(moduleScale, moduleScale, 1f);
+            newModule.transform.localScale = new Vector3(
+                ScreenSizeUtils.ScaleBasedOnWidth(),
+                ScreenSizeUtils.ScaleBasedOnWidth(),
+                1f);
 
             // TODO: also change X position?
             newModule.transform.localPosition = new Vector2(0, newModuleY);
-            newModuleY += dimension.top - dimension.bottom + gapBtwModules;
+            newModuleY +=
+                (dimension.top - dimension.bottom) * ScreenSizeUtils.ScaleBasedOnWidth() +
+                    Config.moduleGap;
         }
 
-        DrawFinishLine(newModuleY + gapBtwModules, levelObject);
-        movingRing.finishHeight = Config.levelStartY + newModuleY + gapBtwModules + 3f;
+        DrawFinishLine(Config.modulesHeight + Config.lastModuleToGoalHeight, levelObject);
+        movingRing.finishHeight = Config.levelStartHeight + Config.modulesHeight +
+            Config.lastModuleToGoalHeight + Config.afterGoalHeight;
 
         return levelObject;
     }
