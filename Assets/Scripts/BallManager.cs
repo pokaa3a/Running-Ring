@@ -12,7 +12,18 @@ public class BallManager : MonoBehaviour
     }
 
     public const int maxNumBalls = 60;
-    public int currentNumBalls = 0;
+    public int currentNumBalls
+    {
+        get
+        {
+            int numBalls = 0;
+            foreach (Ball b in balls)
+            {
+                if (b.triggered) numBalls++;
+            }
+            return numBalls;
+        }
+    }
     public Ball[] balls = new Ball[maxNumBalls];
 
     [SerializeField]
@@ -43,7 +54,6 @@ public class BallManager : MonoBehaviour
             balls[i].triggered = false;
         }
         balls[0].triggered = true;
-        currentNumBalls = 1;
     }
 
     public void AddBalls(int idx, int numBallsToAdd)
@@ -69,25 +79,25 @@ public class BallManager : MonoBehaviour
             {
                 // find available ball to enable
                 balls[curIdx].triggered = true;
-                currentNumBalls++;
                 added++;
             }
 
             count++;
-            if (count > maxNumBalls)
+            if (count > maxNumBalls + 1)
             {
                 Assert.IsTrue(false, "stuck in while loop!");
             }
         }
     }
 
-    public void BallCollides(Ball ball)
+    public void BallCollides(int idx)
     {
-        ball.BallExplode();
-        currentNumBalls--;
+        balls[idx].BallExplode();
 
         if (currentNumBalls == 0)
+        {
             GameAdmin.Instance.GameOver();
+        }
     }
 
     void Update()

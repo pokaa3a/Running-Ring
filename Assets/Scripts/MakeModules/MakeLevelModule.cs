@@ -8,6 +8,9 @@ public class MakeLevelModule : MonoBehaviour
     [SerializeField]
     GameObject moduleObject;
 
+    [SerializeField]
+    private LevelElements levelElements;
+
     [TextArea]
     public string filename = "";
 
@@ -27,7 +30,7 @@ public class MakeLevelModule : MonoBehaviour
     void DrawGridLines()
     {
         const int w = 10;
-        const int h = 10;
+        const int h = 50;
 
         // vertical lines
         for (int x = -w; x <= w; ++x)
@@ -64,85 +67,35 @@ public class MakeLevelModule : MonoBehaviour
         }
     }
 
-    // GameObject MakeSquare(ElementJsonObject element, GameObject parent)
-    // {
-    //     GameObject square = new GameObject("Square");
-    //     square.tag = "Obstacle";
-
-    //     // Sprite Renderer
-    //     SpriteRenderer sprRenderer = square.AddComponent<SpriteRenderer>();
-    //     string assetPath = "Packages/com.unity.2d.sprite/Editor/ObjectMenuCreation/DefaultAssets/Textures/Square.png";
-    //     sprRenderer.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(assetPath, typeof(Sprite));
-
-    //     // BoxCollider2D
-    //     BoxCollider2D boxCollider = square.AddComponent<BoxCollider2D>();
-    //     boxCollider.isTrigger = true;
-
-    //     square.transform.SetParent(parent.transform);
-    //     square.transform.localPosition = element.position;
-    //     square.transform.localRotation = element.rotation;
-    //     square.transform.localScale = element.scale;
-
-    //     return square;
-    // }
-
-    // LevelModuleJsonObject MakeModule()
-    // {
-    //     LevelModuleJsonObject jsonObj = new LevelModuleJsonObject();
-    //     jsonObj.name = "module1";
-    //     jsonObj.scale = Vector2.one * 0.7f;
-    //     jsonObj.width = 3f;
-    //     jsonObj.height = 1f;
-
-    //     {
-    //         ElementJsonObject element = new ElementJsonObject();
-    //         element.name = "square";
-    //         element.position = new Vector2(0, 0);
-    //         element.scale = Vector2.one * 0.6f;
-    //         jsonObj.elements.Add(element);
-    //     }
-
-    //     {
-    //         ElementJsonObject element = new ElementJsonObject();
-    //         element.name = "square";
-    //         element.position = new Vector2(-1, 0);
-    //         element.scale = Vector2.one * 0.6f;
-    //         jsonObj.elements.Add(element);
-    //     }
-
-    //     {
-    //         ElementJsonObject element = new ElementJsonObject();
-    //         element.name = "square";
-    //         element.position = new Vector2(-2, 0);
-    //         element.scale = Vector2.one * 0.6f;
-    //         jsonObj.elements.Add(element);
-    //     }
-
-    //     return jsonObj;
-    // }
-
-    GameObject InstantiateModule(LevelModuleJsonObject jsonObj)
+    // This method is almost a duplicate of LevelManager.InstantiateModuleFromFile()
+    public void LoadFromJson()
     {
-        GameObject module = new GameObject("Module");
-
-        foreach (ElementJsonObject element in jsonObj.elements)
-        {
-            if (element.name == "square")
-            {
-                // GameObject square = MakeSquare(element, module);
-            }
-        }
-        // module.transform.localScale = jsonObj.scale;
-
-        return module;
-    }
-
-    LevelModuleJsonObject LoadFromJson(string path)
-    {
-        string json = System.IO.File.ReadAllText(path);
+        string jsonStr = System.IO.File.ReadAllText(jsonPath);
         LevelModuleJsonObject jsonObj =
-            (LevelModuleJsonObject)JsonUtility.FromJson(json, typeof(LevelModuleJsonObject));
-        return jsonObj;
+            (LevelModuleJsonObject)JsonUtility.FromJson(jsonStr, typeof(LevelModuleJsonObject));
+
+        foreach (ElementJsonObject elementJsonObj in jsonObj.elements)
+        {
+            GameObject elementPrefab = null;
+            GameObject elementObject = null;
+
+            if (elementJsonObj.name == "square")
+            {
+                elementPrefab = levelElements.square;
+            }
+            else if (elementJsonObj.name == "food")
+            {
+                elementPrefab = levelElements.food;
+            }
+            else if (elementJsonObj.name == "breakable")
+            {
+                elementPrefab = levelElements.breakable;
+            }
+            elementObject = (GameObject)Instantiate(elementPrefab);
+            elementObject.transform.SetParent(moduleObject.transform);
+            elementObject.transform.localPosition = elementJsonObj.position;
+            elementObject.transform.localRotation = elementJsonObj.rotation;
+        }
     }
 
     public void AlignObjects()
@@ -177,9 +130,9 @@ public class MakeLevelModule : MonoBehaviour
             top = Mathf.Max(top, child.transform.position.y);
 
             ElementJsonObject elementJsonObj = new ElementJsonObject();
-            if (child.gameObject.name.Contains("Obstacle"))
+            if (child.gameObject.name.Contains("Square"))
             {
-                elementJsonObj.name = "obstacle";
+                elementJsonObj.name = "square";
             }
             else if (child.gameObject.name.Contains("Food"))
             {

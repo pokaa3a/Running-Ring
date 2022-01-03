@@ -6,7 +6,7 @@ public class Ring : MonoBehaviour
 {
     public class Config
     {
-        public const float radius = 1.5f;
+        public static float radius = 4.0f;
         public const float lineWidthMultiplier = 0.02f;
         public const int numPositions = 100;
         public const float cx = 0;
@@ -18,6 +18,7 @@ public class Ring : MonoBehaviour
     void Awake()
     {
         lineRenderer = gameObject.GetComponent<LineRenderer>();
+        Config.radius *= ScreenSizeUtils.HorizontalScale();
     }
 
     void Start()

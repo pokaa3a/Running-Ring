@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Level Element", menuName = "ScriptableObjects/LevelElements")]
 public class LevelElements : ScriptableObject
 {
-    public GameObject obstacle;
+    public GameObject square;
     public GameObject breakable;
     public GameObject food;
 }

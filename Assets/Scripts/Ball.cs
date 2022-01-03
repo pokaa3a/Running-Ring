@@ -61,11 +61,11 @@ public class Ball : MonoBehaviour
     {
         if (collision.gameObject.tag == "Obstacle")
         {
-            ballManager.BallCollides(this);
+            ballManager.BallCollides(this.id);
         }
         else if (collision.gameObject.tag == "Breakable")
         {
-            ballManager.BallCollides(this);
+            ballManager.BallCollides(this.id);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "Food")

@@ -1,12 +1,38 @@
 {
     "name": "Module",
-    "left": -1.0,
-    "right": 1.0,
-    "top": 2.0,
+    "left": -4.0,
+    "right": 0.0,
+    "top": 0.0,
     "bottom": 0.0,
     "elements": [
         {
-            "name": "obstacle",
+            "name": "square",
+            "position": {
+                "x": -3.0,
+                "y": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            }
+        },
+        {
+            "name": "square",
+            "position": {
+                "x": -2.0,
+                "y": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            }
+        },
+        {
+            "name": "square",
             "position": {
                 "x": -1.0,
                 "y": 0.0
@@ -19,9 +45,9 @@
             }
         },
         {
-            "name": "obstacle",
+            "name": "square",
             "position": {
-                "x": 1.0,
+                "x": 0.0,
                 "y": 0.0
             },
             "rotation": {
@@ -32,62 +58,10 @@
             }
         },
         {
-            "name": "breakable",
+            "name": "square",
             "position": {
-                "x": -1.0,
-                "y": 2.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
-            }
-        },
-        {
-            "name": "breakable",
-            "position": {
-                "x": 1.0,
-                "y": 2.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
-            }
-        },
-        {
-            "name": "food",
-            "position": {
-                "x": -1.0,
-                "y": 1.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
-            }
-        },
-        {
-            "name": "food",
-            "position": {
-                "x": 1.0,
-                "y": 1.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
-            }
-        },
-        {
-            "name": "food",
-            "position": {
-                "x": 0.0,
-                "y": 2.0
+                "x": -4.0,
+                "y": 0.0
             },
             "rotation": {
                 "x": 0.0,

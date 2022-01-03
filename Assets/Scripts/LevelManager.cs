@@ -25,14 +25,13 @@ public class LevelManager : MonoBehaviour
     private LevelElements levelElements;
 
     [SerializeField]
-    private List<LevelModule> modules;
-
-    [SerializeField]
     private GameObject movingRingObject;
     private MovingRing movingRing;
 
     private List<string> moduleJsons = new List<string>();
     private GameObject levelObject = null;
+
+    private float moduleScale = 1f;
 
     void Awake()
     {
@@ -46,6 +45,8 @@ public class LevelManager : MonoBehaviour
                 moduleJsons.Add(jsonFile);
             }
         }
+
+        moduleScale = ScreenSizeUtils.HorizontalScale();
     }
 
     void DrawFinishLine(float height, GameObject parent)
@@ -68,17 +69,17 @@ public class LevelManager : MonoBehaviour
             (LevelModuleJsonObject)JsonUtility.FromJson(jsonStr, typeof(LevelModuleJsonObject));
 
         GameObject module = new GameObject("Module");
-        foreach (ElementJsonObject elementObj in jsonObj.elements)
+        foreach (ElementJsonObject elementJsonObj in jsonObj.elements)
         {
             GameObject elementPrefab = null;
             GameObject elementObject = null;
             // TODO: add default prefab to elementPrefab 
-            if (elementObj.name == "obstacle")
+            if (elementJsonObj.name == "square")
             {
-                elementPrefab = levelElements.obstacle;
+                elementPrefab = levelElements.square;
                 elementObject = (GameObject)Instantiate(elementPrefab);
             }
-            else if (elementObj.name == "food")
+            else if (elementJsonObj.name == "food")
             {
                 elementPrefab = levelElements.food;
                 elementObject = (GameObject)Instantiate(elementPrefab);
@@ -86,14 +87,14 @@ public class LevelManager : MonoBehaviour
                 Food food = elementObject.GetComponent<Food>();
                 food.number = Random.Range(1, 10);
             }
-            else if (elementObj.name == "breakable")
+            else if (elementJsonObj.name == "breakable")
             {
                 elementPrefab = levelElements.breakable;
                 elementObject = (GameObject)Instantiate(elementPrefab);
             }
             elementObject.transform.SetParent(module.transform);
-            elementObject.transform.localPosition = elementObj.position;
-            elementObject.transform.localRotation = elementObj.rotation;
+            elementObject.transform.localPosition = elementJsonObj.position;
+            elementObject.transform.localRotation = elementJsonObj.rotation;
         }
 
         dimensionInOut.left = jsonObj.left;
@@ -113,13 +114,16 @@ public class LevelManager : MonoBehaviour
         float newModuleY = 0f;
         float gapBtwModules = 2f;
 
+        int[] levelIdx = { 5, 5, 0, 0, 0 };
+        int k = 0;
         while (newModuleY < Config.goalHeight)
         {
-            int idx = Random.Range(0, moduleJsons.Count);
+            // int idx = Random.Range(0, moduleJsons.Count);
+            int idx = levelIdx[k++];
             ModuleDimension dimension = new ModuleDimension();
             GameObject newModule = InstantiateModuleFromFile(moduleJsons[idx], dimension);
-
             newModule.transform.SetParent(levelObject.transform);
+            newModule.transform.localScale = new Vector3(moduleScale, moduleScale, 1f);
 
             // TODO: also change X position?
             newModule.transform.localPosition = new Vector2(0, newModuleY);
