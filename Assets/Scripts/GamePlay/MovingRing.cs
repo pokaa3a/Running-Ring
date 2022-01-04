@@ -5,7 +5,6 @@ using UnityEngine;
 public class MovingRing : MonoBehaviour
 {
     [SerializeField]
-    private GameObject ballManagerObj;
     private BallManager ballManager;
 
     public float finishHeight = 10f;
@@ -14,23 +13,14 @@ public class MovingRing : MonoBehaviour
         public const float raisingSpeed = 1.5f;
     }
 
-    void Awake()
-    {
-        ballManager = ballManagerObj.GetComponent<BallManager>();
-    }
-
-    public void Reset()
-    {
-        gameObject.transform.position = Vector2.zero;
-
-        ballManager.Reset();
-    }
+    private bool reachedGoal = false;
 
     void FixedUpdate()
     {
-        if (gameObject.transform.position.y >= finishHeight - Ring.Config.originY)
+        if (!reachedGoal && gameObject.transform.position.y >= finishHeight - Ring.Config.originY)
         {
             GameAdmin.Instance.GameComplete();
+            reachedGoal = true;
             return;
         }
 
@@ -39,5 +29,18 @@ public class MovingRing : MonoBehaviour
             gameObject.transform.position +=
                 Vector3.up * Config.raisingSpeed * Time.fixedDeltaTime;
         }
+    }
+
+    public void Reset()
+    {
+        gameObject.transform.position = Vector2.zero;
+        reachedGoal = false;
+
+        ballManager.Reset();
+    }
+
+    public float GetProgress()
+    {
+        return gameObject.transform.position.y / (finishHeight - Ring.Config.originY);
     }
 }

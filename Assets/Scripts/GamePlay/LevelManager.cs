@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
 {
     public class Config
     {
+        public const int maxFood = 5;
         /*
             ---- Ring finish line ----   ┐
                                          │
@@ -43,7 +44,6 @@ public class LevelManager : MonoBehaviour
         public static float afterGoalHeight = 0f;
 
         public static string jsonDir = Application.dataPath + "/LevelModuleJsons/";
-        // public const float levelStartY = 6f;
     }
 
     public class ModuleDimension
@@ -119,7 +119,7 @@ public class LevelManager : MonoBehaviour
                 elementObject = (GameObject)Instantiate(elementPrefab);
 
                 Food food = elementObject.GetComponent<Food>();
-                food.number = Random.Range(1, 10);
+                food.number = Random.Range(1, Config.maxFood);
             }
             else if (elementJsonObj.name == "breakable")
             {

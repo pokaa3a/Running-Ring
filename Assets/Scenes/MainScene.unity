@@ -167,8 +167,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelElements: {fileID: 11400000, guid: 8e4d2d52fbc4b43eab527ee55018da16, type: 2}
-  modules:
-  - {fileID: 11400000, guid: adfb25d26d6894ae1a3470001e591016, type: 2}
   movingRingObject: {fileID: 983555701}
 --- !u!1 &140941203
 GameObject:
@@ -371,12 +369,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03fa71aa5eec4d09b6f442a1857517e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameReadyPage: {fileID: 1821590820}
-  gameCompletePage: {fileID: 1844822584}
-  gameOverPage: {fileID: 1952463082}
-  ballManagerObject: {fileID: 1144310810}
-  movingRingObject: {fileID: 983555701}
-  levelManagerObject: {fileID: 3602016}
+  gameReadyPage: {fileID: 1821590824}
+  gameCompletePage: {fileID: 1844822588}
+  gameOverPage: {fileID: 1952463086}
+  ballManager: {fileID: 1144310812}
+  movingRing: {fileID: 983555703}
+  levelManager: {fileID: 3602018}
 --- !u!1 &450473056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,7 +1210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cecf0bff8a5954f30b4c300f1a987ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballManagerObj: {fileID: 1144310810}
+  ballManager: {fileID: 1144310812}
   finishHeight: 10
 --- !u!1 &1144310810
 GameObject:
@@ -1257,7 +1255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf8f5e91f44a48688a524f18f6dad03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentNumBalls: 0
   balls:
   - {fileID: 0}
   - {fileID: 0}
@@ -1572,6 +1569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e4d429b47e0c4d648c269a1694869d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelText: {fileID: 1484865846}
 --- !u!1 &1844822584
 GameObject:
   m_ObjectHideFlags: 0
@@ -1662,6 +1660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72484edc3cdfc4595bf77e23a92bca58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelText: {fileID: 315039066}
 --- !u!1 &1952463082
 GameObject:
   m_ObjectHideFlags: 0
@@ -1752,6 +1751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33564adea69a345fdaecbd6507c58cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  progressText: {fileID: 974459898}
 --- !u!1 &2128948572
 GameObject:
   m_ObjectHideFlags: 0
